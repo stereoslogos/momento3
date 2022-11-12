@@ -22,3 +22,5 @@ router.post   ("/venta",     cors(), controller.createVentas); // Create
 
 
 module.exports = router;
+
+// ruta para postman: localhost:3000/api/vendedor

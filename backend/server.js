@@ -24,3 +24,6 @@ app.use(express.static(path.join(__dirname , 'public')));
 
 // SERVIDOR WEB
 app.listen(PORT, () => console.log("Servidor en puerto:3000"));
+
+
+//comando para correr servidor "node server"
