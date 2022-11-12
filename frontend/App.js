@@ -26,10 +26,16 @@ const saveVendedor = async () => {
       totalcomision,
     });
     alert("Vendedor creado correctamente.")
+    setSid("");
+    setNombre("");
+    setCorreo("");
+    setTotalComision("");
+   
   } catch (error) {
     console.log(error)
   }
   finally{
+    getVendedores();
     setLoading(false);
   }
 };
@@ -40,8 +46,10 @@ const getVendedores = async () => {
   try{
     const response = await axios.get(`${ip}/api/vendedor`);
     setData(response.data)
-
-    
+    setSid("");
+    setNombre("");
+    setCorreo("");
+    setTotalComision("");
   }
   catch(error){
     console.log(error)
