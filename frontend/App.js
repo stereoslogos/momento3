@@ -4,37 +4,28 @@ import axios from 'axios';
 import { setStatusBarHidden } from 'expo-status-bar';
 
 export default function App(){
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true); //componente visual de carga, muestra una bolita cargando
   const [data, setData] = useState([]);
   const [nombre, setNombre] = useState('');
-  const [apellidos, setApellidos] = useState('');
+  const [correoe, setCorreo] = useState('');
+  const [totalcomision, setTotalComision] = useState('');
   const [sid, setSid] = useState('');
-/*
-  const getUsers = async () => {
-     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/users');
-      const json = await response.json();
-      setData(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-*/
+  const ip = "http://192.168.1.13:3000";
 
-const saveCliente = async () => {
-  if (!nombre.trim() || !apellidos.trim()) {
-    alert("Name and last are required.");
+
+const saveVendedor = async () => {
+  if (!nombre.trim() || !correoe.trim() || !totalcomision.trim()) {
+    alert("Nombre, correo y comisión son obligatorios");
     return;
   }
   setLoading(true);
   try {
-    const response = await axios.post(`http://172.16.61.242:3000/api/clientes`, {
+    const response = await axios.post(`${ip}/api/vendedor`, {
       nombre,
-      apellidos,
+      correoe,
+      totalcomision,
     });
-    alert("Cliente creado correctamente.")
+    alert("Vendedor creado correctamente.")
   } catch (error) {
     console.log(error)
   }
@@ -43,46 +34,14 @@ const saveCliente = async () => {
   }
 };
 
-const updateCliente = async (id) => {
-  if (!nombre.trim() || !apellidos.trim()) {
-    alert("Name and last are required.");
-    return;
-  }
-  setLoading(true);
-  try {
-    const response = await axios.put(`http://172.16.61.242:3000/api/clientes/${id}`, {
-      nombre,
-      apellidos,
-    });
-    alert("Cliente modificado correctamente.")
-  } catch (error) {
-    console.log(error)
-  }
-  finally{
-    setLoading(false);
-  }
-};
 
-const deleteCliente = async (id) => {
-  setLoading(true);
-  try {
-    if(confirm("¿Está seguro de eliminar el cliente?")){
-      const response = await axios.delete(`http://172.16.61.242:3000/api/clientes/${id}`);
-      alert("Cliente eliminado correctamente.")
-    }
-  } catch (error) {
-    console.log(error)
-  }
-  finally{
-    setLoading(false);
-  }
-};
-
-const getClientes = async () => {
+const getVendedores = async () => {
   setLoading(true);
   try{
-    const response = await axios.get(`http://172.16.61.242:3000/api/clientes`);
+    const response = await axios.get(`${ip}/api/vendedor`);
     setData(response.data)
+
+    
   }
   catch(error){
     console.log(error)
@@ -92,13 +51,14 @@ const getClientes = async () => {
   }
 };
 
-const getClientePorId = async (id) => {
+const getVendedorPorId = async (id) => {
   setLoading(true);
   try{
-    const response = await axios.get(`http://172.16.61.242:3000/api/clientes/${id}`);
+    const response = await axios.get(`${ip}/api/vendedor/${id}`);
     setData(response.data)
     setNombre(response.data.nombre)
-    setApellidos(response.data.apellidos)
+    setCorreo(response.data.correoe)
+    setTotalComision(response.data.totalcomision)
   }
   catch(error){
     console.log(error)
@@ -110,42 +70,28 @@ const getClientePorId = async (id) => {
 
   useEffect(() => {
     //getUsers();
-    getClientes();
+    getVendedores();
   }, []);
 
   return (
     <View style={{ flex: 1, padding: 24 }}>
       <TouchableOpacity
         style={[styles.buttons,{backgroundColor:'blue'}]}
-        onPress={saveCliente}
+        onPress={saveVendedor}
       >
         <Text style={{color:'yellow'}}>Guardar</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.buttons,{backgroundColor:'orange'}]}
-        onPress={()=>updateCliente(sid)}
-      >
-        <Text style={{color:'yellow'}}>Actualizar</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.buttons,{backgroundColor:'red'}]}
-        onPress={()=>deleteCliente(sid)}
-      >
-        <Text style={{color:'yellow'}}>Eliminar</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
         style={[styles.buttons,{backgroundColor:'#1ABC9C'}]}
-        onPress={getClientes}
+        onPress={getVendedores}
       >
-        <Text style={{color:'yellow'}}>Buscar Clientes</Text>
+        <Text style={{color:'yellow'}}>Buscar Vendedores</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.buttons,{backgroundColor:'green'}]}
-        onPress={()=>getClientePorId(sid)}
+        onPress={()=>getVendedorPorId(sid)}
       >
         <Text style={{color:'yellow'}}>Buscar por ID</Text>
       </TouchableOpacity>
@@ -163,10 +109,16 @@ const getClientePorId = async (id) => {
           value={nombre}
         />
         <TextInput
-          placeholder='Ingrese apellidos a buscar'
+          placeholder='Ingrese correo a buscar'
           style={styles.inputs}
-          onChangeText={apellidos => setApellidos(apellidos)}
-          value={apellidos}
+          onChangeText={correoe => setCorreo(correoe)}
+          value={correoe}
+        />
+        <TextInput
+          placeholder='Ingrese comisión a buscar'
+          style={styles.inputs}
+          onChangeText={totalcomision => setTotalComision(totalcomision)}
+          value={totalcomision}
         />
       </View>
       {isLoading ? <ActivityIndicator size='large' color='black' /> : (
@@ -177,12 +129,12 @@ const getClientePorId = async (id) => {
             <TouchableOpacity
               style={[styles.buttons, {backgroundColor: item.id % 2 == 1 ? 'orange' : 'red'}]}
               onPress={()=>{
-                if(confirm(`¿Está seguro de eliminar el usuario ${item.nombre} ${item.apellidos}?`)){
+                if(confirm(`¿Está seguro de eliminar el usuario ${item.nombre} ?`)){
                   alert("Eliminado.")
                 }
               }}
             >
-              <Text>{item.nombre} {item.apellidos}</Text>
+              <Text>{item.nombre}</Text>
             </TouchableOpacity>
           )}
         />
