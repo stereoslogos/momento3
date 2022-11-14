@@ -9,15 +9,17 @@ import {
 } from "react-native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 export default function VendedoresScreen({ route }) {
-  const [isLoading, setLoading] = useState(true); //componente visual de carga, muestra una bolita cargando
-  const [data, setData] = useState([]);
-  const [nombre, setNombre] = useState("");
-  const [correoe, setCorreo] = useState("");
-  const [totalcomision, setTotalComision] = useState("");
-  const [sid, setSid] = useState("");
-  const ip = "http://192.168.1.13:3000";
+
+    const [isLoading, setLoading] = useState(true); //componente visual de carga, muestra una bolita cargando
+    const [data, setData] = useState([]);
+    const [nombre, setNombre] = useState("");
+    const [correoe, setCorreo] = useState("");
+    const [totalcomision, setTotalComision] = useState("");
+    const [sid, setSid] = useState("");
+    const ip = "http://192.168.1.13:3000";
 
   const saveVendedor = async () => {
     if (!nombre.trim() || !correoe.trim() || !totalcomision.trim()) {
@@ -81,6 +83,7 @@ export default function VendedoresScreen({ route }) {
   }, []);
 
   return (
+
     <View style={{ flex: 1, padding: 24 }}>
       <View>
         <TextInput

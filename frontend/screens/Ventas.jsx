@@ -10,6 +10,7 @@ import {
   import axios from "axios";
   import React, { useEffect, useState } from "react";
   
+  
   export default function VentasScreen({ route }) {
     const [isLoading, setLoading] = useState(true); //componente visual de carga, muestra una bolita cargando
     const [data, setData] = useState([]);
