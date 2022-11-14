@@ -18,7 +18,7 @@ import {
     const [fecha, setFecha] = useState("");
     const [valorventa, setValorVenta] = useState("");
     const [sid, setSid] = useState("");
-    const ip = "http://192.168.1.13:3000";
+    const ip = "http://192.168.1.60:3000";
   
     const saveVenta = async () => {
       if (!zona.trim() || !fecha.trim() || !valorventa.trim()) {
