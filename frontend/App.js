@@ -17,11 +17,11 @@ export default function App(){
           }}>    
            
         <Tab.Screen name='Vendedores' component={VendedoresScreen} options={{title:'Vendedores', tabBarIcon:({color, size})=>(
-            <Ionicons name="people" color='#23B574' size={30}></Ionicons>
+            <Ionicons name="people-circle-outline" color='#23B574' size={30}></Ionicons>
           ) }}>          
         </Tab.Screen>
           <Tab.Screen name='Ventas' component={VentasScreen} options={{title:'Ventas', tabBarIcon:({color, size})=>(
-            <Ionicons name="people" color='#23B574' size={30}></Ionicons>
+            <Ionicons name="cash-outline" color='#23B574' size={30}></Ionicons>
           ) }}>          
           </Tab.Screen>
         </Tab.Navigator>
